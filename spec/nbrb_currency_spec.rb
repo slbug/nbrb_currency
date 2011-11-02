@@ -48,7 +48,7 @@ describe "NbrbCurrency" do
     subunit = Money::Currency.wrap("KWD").subunit_to_unit.to_f
     @bank.exchange(1000, "KWD", "BYR").cents.should == ((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round
     subunit = Money::Currency.wrap("JPY").subunit_to_unit.to_f
-    @bank.exchange(100, "JPY", "BYR").cents.should == ((subunit / 100) * @exchange_rates["currencies"]['JPY'].to_f * 100).round
+    @bank.exchange(100, "JPY", "BYR").cents.should == ((subunit * 100) * @exchange_rates["currencies"]['JPY'].to_f * 100).round
   end
 
   it "should return the correct exchange rates using exchange_with" do
