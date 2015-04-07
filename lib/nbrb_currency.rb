@@ -10,6 +10,8 @@ class NbrbCurrency < Money::Bank::VariableExchange
   NBRB_RATES_URL = 'http://nbrb.by/Services/XmlExRates.aspx'
   CURRENCIES = %w(AUD BGN UAH DKK USD EUR PLN IRR ISK JPY CAD CNY KWD MDL NZD NOK RUB SGD KGS KZT TRY GBP CZK SEK CHF)
 
+  attr_reader :rates_updated_on
+
   def update_rates(cache=nil)
     exchange_rates(cache).each do |exchange_rate|
       rate = exchange_rate.xpath("Rate").text
@@ -49,6 +51,7 @@ class NbrbCurrency < Money::Bank::VariableExchange
   def exchange_rates(cache=nil)
     rates_source = !!cache ? cache : NBRB_RATES_URL
     doc = Nokogiri::XML(open(rates_source))
+    @rates_updated_on = Date.strptime(doc.xpath('DailyExRates/@Date').text, '%m/%d/%Y')
     doc.xpath('DailyExRates//Currency')
   end
 

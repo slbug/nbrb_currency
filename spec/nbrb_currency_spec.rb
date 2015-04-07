@@ -97,4 +97,9 @@ describe "NbrbCurrency" do
     @bank.add_rate("BTC", "USD", 13.7603)
     expect(@bank.exchange(100, "BTC", "USD").cents).to eq(138)
   end
+
+  it "should tell on which date rates were updated" do
+    @bank.update_rates(@cache_path)
+    expect(@bank.rates_updated_on).to eq(Date.new(2015, 4, 8))
+  end
 end
