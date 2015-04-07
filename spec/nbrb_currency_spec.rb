@@ -42,22 +42,42 @@ describe "NbrbCurrency" do
 
   it "should return the correct exchange rates using exchange" do
     @bank.update_rates(@cache_path)
-    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY KWD}.include?(c) }.each do |currency|
-      @bank.exchange(100, currency, "BYR").cents.should == (@exchange_rates["currencies"][currency].to_f * 100).round
+    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY ISK KWD}.include?(c) }.each do |currency|
+      @bank.exchange(10000, currency, "BYR").cents.should == (@exchange_rates["currencies"][currency].to_f * 100).round
     end
     subunit = Money::Currency.wrap("KWD").subunit_to_unit.to_f
-    @bank.exchange(1000, "KWD", "BYR").cents.should == ((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round
+    expect(subunit).to eq(1000)
+
+    #   1.000 KWD == 30996.47 BYR
+    # 100.000 KWD == 3099647 BYR
+    @bank.exchange(100000, "KWD", "BYR").cents.should == ((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round
+
     subunit = Money::Currency.wrap("JPY").subunit_to_unit.to_f
-    @bank.exchange(100, "JPY", "BYR").cents.should == ((subunit * 100) * @exchange_rates["currencies"]['JPY'].to_f * 100).round
+    expect(subunit).to eq(1)
+
+    #    1 JPY == 111.943 BYR
+    # 1000 JPY == 111943 BYR
+    @bank.exchange(1000, "JPY", "BYR").cents.should == (@exchange_rates["currencies"]['JPY'].to_f * 1000).round
   end
 
   it "should return the correct exchange rates using exchange_with" do
     @bank.update_rates(@cache_path)
-    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY KWD}.include?(c) }.each do |currency|
-      @bank.exchange_with(Money.new(100, currency), "BYR").cents.should == (@exchange_rates["currencies"][currency].to_f * 100).round
-      @bank.exchange_with(1.to_money(currency), "BYR").cents.should == (@exchange_rates["currencies"][currency].to_f * 100).round
+    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY KWD ISK}.include?(c) }.each do |currency|
+      expect(@bank.exchange_with(Money.new(10000, currency), "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
+      expect(@bank.exchange_with(100.to_money(currency), "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
     end
-    @bank.exchange_with(5000.to_money('JPY'), 'BYR').cents.should == 55971500 # 559715 BYR
+
+    # No subunits in ISK and JPY.
+    # Therefore 1 ISK is Money.new(1, "ISK"), not Money.new(100, "ISK")
+
+    #  ISK  |    BYR    #
+    #-------+-----------#
+    #     1 |     74.54 #
+    #   100 |   7454.00 #
+    # 10000 | 745400.00 #
+
+    expect(@bank.exchange_with(Money.new(10000, "ISK"), "BYR").cents).to eq(745400)
+    expect(@bank.exchange_with(Money.new(1000, "JPY"), "BYR").cents).to eq(111943)
   end
 
   # in response to #4
