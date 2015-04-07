@@ -19,46 +19,46 @@ describe "NbrbCurrency" do
 
   it "should save the xml file from nbrb given a file path" do
     @bank.save_rates(@tmp_cache_path)
-    File.exists?(@tmp_cache_path).should == true
+    expect(File.exists?(@tmp_cache_path)).to be true
   end
 
   it "should raise an error if an invalid path is given to save_rates" do
-    lambda { @bank.save_rates(nil) }.should raise_exception
+    expect { @bank.save_rates(nil) }.to raise_error
   end
 
   it "should update itself with exchange rates from nbrb website" do
     stub(OpenURI::OpenRead).open(NbrbCurrency::NBRB_RATES_URL) {@cache_path}
     @bank.update_rates
     NbrbCurrency::CURRENCIES.reject{|c| %w{LVL LTL}.include?(c) }.each do |currency|
-      @bank.get_rate(currency, "BYR").should > 0
+      expect(@bank.get_rate(currency, "BYR")).to be > 0
     end
   end
 
   it "should update itself with exchange rates from cache" do
     @bank.update_rates(@cache_path)
     NbrbCurrency::CURRENCIES.each do |currency|
-      @bank.get_rate(currency, "BYR").should > 0
+      expect(@bank.get_rate(currency, "BYR")).to be > 0
     end
   end
 
   it "should return the correct exchange rates using exchange" do
     @bank.update_rates(@cache_path)
     NbrbCurrency::CURRENCIES.reject{|c| %w{JPY ISK KWD}.include?(c) }.each do |currency|
-      @bank.exchange(10000, currency, "BYR").cents.should == (@exchange_rates["currencies"][currency].to_f * 100).round
+      expect(@bank.exchange(10000, currency, "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
     end
     subunit = Money::Currency.wrap("KWD").subunit_to_unit.to_f
     expect(subunit).to eq(1000)
 
     #   1.000 KWD == 30996.47 BYR
     # 100.000 KWD == 3099647 BYR
-    @bank.exchange(100000, "KWD", "BYR").cents.should == ((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round
+    expect(@bank.exchange(100000, "KWD", "BYR").cents).to eq(((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round)
 
     subunit = Money::Currency.wrap("JPY").subunit_to_unit.to_f
     expect(subunit).to eq(1)
 
     #    1 JPY == 111.943 BYR
     # 1000 JPY == 111943 BYR
-    @bank.exchange(1000, "JPY", "BYR").cents.should == (@exchange_rates["currencies"]['JPY'].to_f * 1000).round
+    expect(@bank.exchange(1000, "JPY", "BYR").cents).to eq((@exchange_rates["currencies"]['JPY'].to_f * 1000).round)
   end
 
   it "should return the correct exchange rates using exchange_with" do
@@ -95,6 +95,6 @@ describe "NbrbCurrency" do
     })
     @bank.add_rate("USD", "BTC", 1 / 13.7603)
     @bank.add_rate("BTC", "USD", 13.7603)
-    @bank.exchange(100, "BTC", "USD").cents.should == 138
+    expect(@bank.exchange(100, "BTC", "USD").cents).to eq(138)
   end
 end
