@@ -14,12 +14,12 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
 
   s.add_dependency "nokogiri"
-  s.add_dependency "monetize"
   s.add_dependency "money",    ">= 5.0.0"
 
   s.add_development_dependency "rspec", ">= 2.0.0"
   s.add_development_dependency "rr"
   s.add_development_dependency "shoulda"
+  s.add_development_dependency "monetize"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
