@@ -29,7 +29,7 @@ describe "NbrbCurrency" do
   it "should update itself with exchange rates from nbrb website" do
     stub(OpenURI::OpenRead).open(NbrbCurrency::NBRB_RATES_URL) {@cache_path}
     @bank.update_rates
-    NbrbCurrency::CURRENCIES.each do |currency|
+    NbrbCurrency::CURRENCIES.reject{|c| %w{LVL LTL}.include?(c) }.each do |currency|
       @bank.get_rate(currency, "BYR").should > 0
     end
   end
