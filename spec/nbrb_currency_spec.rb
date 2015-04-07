@@ -62,7 +62,7 @@ describe "NbrbCurrency" do
 
   # in response to #4
   it "should exchange btc" do
-    Money::Currency::TABLE[:btc] = {
+    Money::Currency.register({
       :priority        => 1,
       :iso_code        => "BTC",
       :name            => "Bitcoin",
@@ -71,7 +71,7 @@ describe "NbrbCurrency" do
       :subunit_to_unit => 1000,
       :separator       => ".",
       :delimiter       => ","
-    }
+    })
     @bank.add_rate("USD", "BTC", 1 / 13.7603)
     @bank.add_rate("BTC", "USD", 13.7603)
     @bank.exchange(100, "BTC", "USD").cents.should == 138
