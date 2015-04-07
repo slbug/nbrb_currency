@@ -1,192 +1,185 @@
-<?xml version="1.0" encoding="windows-1251"?>
-<DailyExRates Date="10/26/2011">
+п»ї<?xml version="1.0" encoding="utf-8"?>
+<DailyExRates Date="04/08/2015">
    <Currency Id="170">
       <NumCode>036</NumCode>
       <CharCode>AUD</CharCode>
       <Scale>1</Scale>
-      <Name>Австралийский доллар</Name>
-      <Rate>8920.87</Rate>
+      <Name>РђРІСЃС‚СЂР°Р»РёР№СЃРєРёР№ РґРѕР»Р»Р°СЂ</Name>
+      <Rate>11113.11</Rate>
    </Currency>
    <Currency Id="191">
       <NumCode>975</NumCode>
       <CharCode>BGN</CharCode>
       <Scale>1</Scale>
-      <Name>Болгарcкий лев</Name>
-      <Rate>6059.74</Rate>
+      <Name>Р‘РѕР»РіР°СЂСЃРєРёР№ Р»РµРІ</Name>
+      <Rate>8036.83</Rate>
    </Currency>
    <Currency Id="224">
       <NumCode>980</NumCode>
       <CharCode>UAH</CharCode>
       <Scale>1</Scale>
-      <Name>Гривна</Name>
-      <Rate>1064.87</Rate>
+      <Name>Р“СЂРёРІРЅР°</Name>
+      <Rate>616.07</Rate>
    </Currency>
    <Currency Id="36">
       <NumCode>208</NumCode>
       <CharCode>DKK</CharCode>
       <Scale>1</Scale>
-      <Name>Датская крона</Name>
-      <Rate>1592.06</Rate>
+      <Name>Р”Р°С‚СЃРєР°СЏ РєСЂРѕРЅР°</Name>
+      <Rate>2103.35</Rate>
    </Currency>
    <Currency Id="145">
       <NumCode>840</NumCode>
       <CharCode>USD</CharCode>
       <Scale>1</Scale>
-      <Name>Доллар США</Name>
-      <Rate>8520</Rate>
+      <Name>Р”РѕР»Р»Р°СЂ РЎРЁРђ</Name>
+      <Rate>14490</Rate>
    </Currency>
    <Currency Id="19">
       <NumCode>978</NumCode>
       <CharCode>EUR</CharCode>
       <Scale>1</Scale>
-      <Name>Евро</Name>
-      <Rate>11860</Rate>
-   </Currency>
-   <Currency Id="166">
-      <NumCode>960</NumCode>
-      <CharCode>XDR</CharCode>
-      <Scale>1</Scale>
-      <Name>Единица СПЗ (SDR) от МВФ</Name>
-      <Rate>13467.99</Rate>
+      <Name>Р•РІСЂРѕ</Name>
+      <Rate>15840</Rate>
    </Currency>
    <Currency Id="219">
       <NumCode>985</NumCode>
       <CharCode>PLN</CharCode>
       <Scale>1</Scale>
-      <Name>Злотый</Name>
-      <Rate>2714.33</Rate>
-   </Currency>
-   <Currency Id="67">
-      <NumCode>392</NumCode>
-      <CharCode>JPY</CharCode>
-      <Scale>10</Scale>
-      <Name>Иена</Name>
-      <Rate>1119.43</Rate>
+      <Name>Р—Р»РѕС‚С‹Р№</Name>
+      <Rate>3869.31</Rate>
    </Currency>
    <Currency Id="264">
       <NumCode>364</NumCode>
       <CharCode>IRR</CharCode>
       <Scale>1000</Scale>
-      <Name>Иранский риал</Name>
-      <Rate>794.63</Rate>
+      <Name>РСЂР°РЅСЃРєРёР№ СЂРёР°Р»</Name>
+      <Rate>517.63</Rate>
    </Currency>
    <Currency Id="58">
       <NumCode>352</NumCode>
       <CharCode>ISK</CharCode>
       <Scale>1</Scale>
-      <Name>Исландская крона</Name>
-      <Rate>74.54</Rate>
+      <Name>РСЃР»Р°РЅРґСЃРєР°СЏ РєСЂРѕРЅР°</Name>
+      <Rate>106.68</Rate>
+   </Currency>
+   <Currency Id="277">
+      <NumCode>392</NumCode>
+      <CharCode>JPY</CharCode>
+      <Scale>10</Scale>
+      <Name>Р™РµРЅР°</Name>
+      <Rate>1207.75</Rate>
    </Currency>
    <Currency Id="23">
       <NumCode>124</NumCode>
       <CharCode>CAD</CharCode>
       <Scale>1</Scale>
-      <Name>Канадский доллар</Name>
-      <Rate>8494.94</Rate>
+      <Name>РљР°РЅР°РґСЃРєРёР№ РґРѕР»Р»Р°СЂ</Name>
+      <Rate>11597.1</Rate>
    </Currency>
    <Currency Id="254">
       <NumCode>156</NumCode>
       <CharCode>CNY</CharCode>
       <Scale>1</Scale>
-      <Name>Китайский юань</Name>
-      <Rate>1339.46</Rate>
+      <Name>РљРёС‚Р°Р№СЃРєРёР№ СЋР°РЅСЊ</Name>
+      <Rate>2337.81</Rate>
    </Currency>
    <Currency Id="72">
       <NumCode>414</NumCode>
       <CharCode>KWD</CharCode>
       <Scale>1</Scale>
-      <Name>Кувейтский динар</Name>
-      <Rate>30996.47</Rate>
-   </Currency>
-   <Currency Id="176">
-      <NumCode>428</NumCode>
-      <CharCode>LVL</CharCode>
-      <Scale>1</Scale>
-      <Name>Латвийский лат</Name>
-      <Rate>16836.28</Rate>
-   </Currency>
-   <Currency Id="177">
-      <NumCode>440</NumCode>
-      <CharCode>LTL</CharCode>
-      <Scale>1</Scale>
-      <Name>Литовский лит</Name>
-      <Rate>3432.51</Rate>
+      <Name>РљСѓРІРµР№С‚СЃРєРёР№ РґРёРЅР°СЂ</Name>
+      <Rate>48180.35</Rate>
    </Currency>
    <Currency Id="178">
       <NumCode>498</NumCode>
       <CharCode>MDL</CharCode>
       <Scale>1</Scale>
-      <Name>Молдавский лей</Name>
-      <Rate>730.39</Rate>
+      <Name>РњРѕР»РґР°РІСЃРєРёР№ Р»РµР№</Name>
+      <Rate>820.96</Rate>
+   </Currency>
+   <Currency Id="286">
+      <NumCode>554</NumCode>
+      <CharCode>NZD</CharCode>
+      <Scale>1</Scale>
+      <Name>РќРѕРІРѕР·РµР»Р°РЅРґСЃРєРёР№ РґРѕР»Р»Р°СЂ</Name>
+      <Rate>10892.86</Rate>
    </Currency>
    <Currency Id="101">
       <NumCode>578</NumCode>
       <CharCode>NOK</CharCode>
       <Scale>1</Scale>
-      <Name>Норвежская крона</Name>
-      <Rate>1544.71</Rate>
+      <Name>РќРѕСЂРІРµР¶СЃРєР°СЏ РєСЂРѕРЅР°</Name>
+      <Rate>1805.83</Rate>
    </Currency>
    <Currency Id="190">
       <NumCode>643</NumCode>
       <CharCode>RUB</CharCode>
       <Scale>1</Scale>
-      <Name>Российский рубль</Name>
-      <Rate>279</Rate>
+      <Name>Р РѕСЃСЃРёР№СЃРєРёР№ СЂСѓР±Р»СЊ</Name>
+      <Rate>262</Rate>
+   </Currency>
+   <Currency Id="278">
+      <NumCode>960</NumCode>
+      <CharCode>XDR</CharCode>
+      <Scale>1</Scale>
+      <Name>РЎР”Р  (РЎРїРµС†РёР°Р»СЊРЅС‹Рµ РїСЂР°РІР° Р·Р°РёРјСЃС‚РІРѕРІР°РЅРёСЏ)</Name>
+      <Rate>20188.34</Rate>
    </Currency>
    <Currency Id="119">
       <NumCode>702</NumCode>
       <CharCode>SGD</CharCode>
       <Scale>1</Scale>
-      <Name>Сингапурcкий доллар</Name>
-      <Rate>6743.71</Rate>
+      <Name>РЎРёРЅРіР°РїСѓСЂcРєРёР№ РґРѕР»Р»Р°СЂ</Name>
+      <Rate>10675.61</Rate>
    </Currency>
    <Currency Id="223">
       <NumCode>417</NumCode>
       <CharCode>KGS</CharCode>
       <Scale>1</Scale>
-      <Name>Сом</Name>
-      <Rate>187.97</Rate>
+      <Name>РЎРѕРј</Name>
+      <Rate>226.76</Rate>
    </Currency>
    <Currency Id="222">
       <NumCode>398</NumCode>
       <CharCode>KZT</CharCode>
       <Scale>1</Scale>
-      <Name>Тенге</Name>
-      <Rate>57.58</Rate>
+      <Name>РўРµРЅРіРµ</Name>
+      <Rate>78.04</Rate>
    </Currency>
    <Currency Id="256">
       <NumCode>949</NumCode>
       <CharCode>TRY</CharCode>
       <Scale>1</Scale>
-      <Name>Турецкая лира</Name>
-      <Rate>4714.74</Rate>
+      <Name>РўСѓСЂРµС†РєР°СЏ Р»РёСЂР°</Name>
+      <Rate>5602.06</Rate>
    </Currency>
    <Currency Id="143">
       <NumCode>826</NumCode>
       <CharCode>GBP</CharCode>
       <Scale>1</Scale>
-      <Name>Фунт стерлингов</Name>
-      <Rate>13618.37</Rate>
+      <Name>Р¤СѓРЅС‚ СЃС‚РµСЂР»РёРЅРіРѕРІ</Name>
+      <Rate>21506.78</Rate>
    </Currency>
    <Currency Id="171">
       <NumCode>203</NumCode>
       <CharCode>CZK</CharCode>
       <Scale>1</Scale>
-      <Name>Чешская крона</Name>
-      <Rate>475.9</Rate>
+      <Name>Р§РµС€СЃРєР°СЏ РєСЂРѕРЅР°</Name>
+      <Rate>572.71</Rate>
    </Currency>
    <Currency Id="129">
       <NumCode>752</NumCode>
       <CharCode>SEK</CharCode>
       <Scale>1</Scale>
-      <Name>Шведская крона</Name>
-      <Rate>1300.6</Rate>
+      <Name>РЁРІРµРґСЃРєР°СЏ РєСЂРѕРЅР°</Name>
+      <Rate>1683.92</Rate>
    </Currency>
    <Currency Id="130">
       <NumCode>756</NumCode>
       <CharCode>CHF</CharCode>
       <Scale>1</Scale>
-      <Name>Швейцарский франк</Name>
-      <Rate>9684.57</Rate>
+      <Name>РЁРІРµР№С†Р°СЂСЃРєРёР№ С„СЂР°РЅРє</Name>
+      <Rate>15042.82</Rate>
    </Currency>
 </DailyExRates>

@@ -29,7 +29,7 @@ describe "NbrbCurrency" do
   it "should update itself with exchange rates from nbrb website" do
     stub(OpenURI::OpenRead).open(NbrbCurrency::NBRB_RATES_URL) {@cache_path}
     @bank.update_rates
-    NbrbCurrency::CURRENCIES.reject{|c| %w{LVL LTL}.include?(c) }.each do |currency|
+    NbrbCurrency::CURRENCIES.each do |currency|
       expect(@bank.get_rate(currency, "BYR")).to be > 0
     end
   end
@@ -49,15 +49,15 @@ describe "NbrbCurrency" do
     subunit = Money::Currency.wrap("KWD").subunit_to_unit.to_f
     expect(subunit).to eq(1000)
 
-    #   1.000 KWD == 30996.47 BYR
-    # 100.000 KWD == 3099647 BYR
+    #   1.000 KWD == 48180.35 BYR
+    # 100.000 KWD == 4818035 BYR
     expect(@bank.exchange(100000, "KWD", "BYR").cents).to eq(((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round)
 
     subunit = Money::Currency.wrap("JPY").subunit_to_unit.to_f
     expect(subunit).to eq(1)
 
-    #    1 JPY == 111.943 BYR
-    # 1000 JPY == 111943 BYR
+    #    1 JPY == 120.775 BYR
+    # 1000 JPY == 120775 BYR
     expect(@bank.exchange(1000, "JPY", "BYR").cents).to eq((@exchange_rates["currencies"]['JPY'].to_f * 1000).round)
   end
 
@@ -71,14 +71,14 @@ describe "NbrbCurrency" do
     # No subunits in ISK and JPY.
     # Therefore 1 ISK is Money.new(1, "ISK"), not Money.new(100, "ISK")
 
-    #  ISK  |    BYR    #
-    #-------+-----------#
-    #     1 |     74.54 #
-    #   100 |   7454.00 #
-    # 10000 | 745400.00 #
+    #  ISK  |     BYR    #
+    #-------+------------#
+    #     1 |     106.68 #
+    #   100 |   10668.00 #
+    # 10000 | 1066800.00 #
 
-    expect(@bank.exchange_with(Money.new(10000, "ISK"), "BYR").cents).to eq(745400)
-    expect(@bank.exchange_with(Money.new(1000, "JPY"), "BYR").cents).to eq(111943)
+    expect(@bank.exchange_with(Money.new(10000, "ISK"), "BYR").cents).to eq(1066800)
+    expect(@bank.exchange_with(Money.new(1000, "JPY"), "BYR").cents).to eq(120775)
   end
 
   # in response to #4

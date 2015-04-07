@@ -8,7 +8,7 @@ class InvalidCache < StandardError ; end
 class NbrbCurrency < Money::Bank::VariableExchange
 
   NBRB_RATES_URL = 'http://nbrb.by/Services/XmlExRates.aspx'
-  CURRENCIES = %w(AUD BGN UAH DKK USD EUR PLN JPY IRR ISK CAD CNY KWD LVL LTL MDL NOK RUB SGD KGS KZT TRY GBP CZK SEK CHF)
+  CURRENCIES = %w(AUD BGN UAH DKK USD EUR PLN IRR ISK JPY CAD CNY KWD MDL NZD NOK RUB SGD KGS KZT TRY GBP CZK SEK CHF)
 
   def update_rates(cache=nil)
     exchange_rates(cache).each do |exchange_rate|
