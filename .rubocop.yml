@@ -1,0 +1,23 @@
+---
+inherit_from: .rubocop.standards.yml
+
+AllCops:
+  TargetRubyVersion: 3.4
+  NewCops: enable
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.gemspec'
+    - '**/*.rake'
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19
+  Enabled: true
+
+Layout/LineLength:
+  Exclude:
+    - "*.gemspec"

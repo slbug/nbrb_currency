@@ -1,100 +1,153 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'yaml'
-require 'monetize'
+# frozen_string_literal: true
 
-describe "NbrbCurrency" do
-  before(:each) do
-    @bank = NbrbCurrency.new
-    @cache_path = File.expand_path(File.dirname(__FILE__) + '/exchange_rates.xml')
-    @yml_cache_path = File.expand_path(File.dirname(__FILE__) + '/exchange_rates.yml')
-    @tmp_cache_path = File.expand_path(File.dirname(__FILE__) + '/tmp/exchange_rates.xml')
-    @exchange_rates = YAML.load_file(@yml_cache_path)
+require File.expand_path("#{File.dirname(__FILE__)}/spec_helper")
+
+describe 'NbrbCurrency' do
+  let(:bank) { NbrbCurrency.new }
+  let(:tmp_cache_path) { File.expand_path("#{File.dirname(__FILE__)}/tmp/exchange_rates.json") }
+
+  after do
+    FileUtils.rm_f(tmp_cache_path)
   end
 
-  after(:each) do
-    if File.exists? @tmp_cache_path
-      File.delete @tmp_cache_path
+  describe 'current rates (BYN)' do
+    it 'fetches and parse current rates', vcr: {cassette_name: 'current_rates'} do # rubocop:disable RSpec/MultipleExpectations
+      bank.update_rates
+      usd_rate = bank.get_rate('USD', 'BYN')
+
+      expect(usd_rate).to be > 0
+      expect(usd_rate).to be < 10
+    end
+
+    it 'saves rates to file', vcr: {cassette_name: 'current_rates'} do
+      bank.save_rates(tmp_cache_path)
+      expect(File.exist?(tmp_cache_path)).to be(true)
+    end
+
+    it 'raises error for invalid cache path' do
+      expect { bank.save_rates(nil) }.to raise_exception(InvalidCache)
     end
   end
 
-  it "should save the xml file from nbrb given a file path" do
-    @bank.save_rates(@tmp_cache_path)
-    expect(File.exists?(@tmp_cache_path)).to be true
-  end
+  describe 'historical rates - last month (BYN)' do
+    it 'fetches rates from last month', vcr: {cassette_name: 'rates_2024_11'} do # rubocop:disable RSpec/MultipleExpectations
+      date = Date.new(2024, 11, 1)
+      bank.update_historical_rates(nil, date)
+      usd_rate = bank.get_rate('USD', 'BYN', date)
 
-  it "should raise an error if an invalid path is given to save_rates" do
-    expect { @bank.save_rates(nil) }.to raise_error
-  end
-
-  it "should update itself with exchange rates from nbrb website" do
-    stub(OpenURI::OpenRead).open(NbrbCurrency::NBRB_RATES_URL) {@cache_path}
-    @bank.update_rates
-    NbrbCurrency::CURRENCIES.each do |currency|
-      expect(@bank.get_rate(currency, "BYR")).to be > 0
+      expect(usd_rate).to be > 0
+      expect(usd_rate).to be < 10
     end
   end
 
-  it "should update itself with exchange rates from cache" do
-    @bank.update_rates(@cache_path)
-    NbrbCurrency::CURRENCIES.each do |currency|
-      expect(@bank.get_rate(currency, "BYR")).to be > 0
+  describe 'historical rates - before 2016 redenomination (BYR)' do
+    it 'fetches and detect BYR rates', vcr: {cassette_name: 'rates_2015_01'} do # rubocop:disable RSpec/MultipleExpectations
+      date = Date.new(2015, 1, 1)
+      bank.update_historical_rates(nil, date)
+      usd_rate = bank.get_rate('USD', 'BYR', date)
+
+      expect(usd_rate).to be > 1000
+      expect(usd_rate).to be < 100_000
+    end
+
+    it 'exchanges with BYR rates', vcr: {cassette_name: 'rates_2015_01'} do
+      date = Date.new(2015, 1, 1)
+      bank.update_historical_rates(nil, date)
+      result = bank.exchange(100, 'USD', 'EUR', date)
+
+      expect(result.cents).to be > 0
     end
   end
 
-  it "should return the correct exchange rates using exchange" do
-    @bank.update_rates(@cache_path)
-    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY ISK KWD}.include?(c) }.each do |currency|
-      expect(@bank.exchange(10000, currency, "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
+  describe 'historical rates - 2000 (BYR after first redenomination)' do
+    it 'fetches BYR rates from 2000', vcr: {cassette_name: 'rates_2000_01'} do # rubocop:disable RSpec/MultipleExpectations
+      date = Date.new(2000, 1, 1)
+      bank.update_historical_rates(nil, date)
+      usd_rate = bank.get_rate('USD', 'BYR', date)
+
+      expect(usd_rate).to be > 100
+      expect(usd_rate).to be < 10_000
     end
-    subunit = Money::Currency.wrap("KWD").subunit_to_unit.to_f
-    expect(subunit).to eq(1000)
-
-    #   1.000 KWD == 48180.35 BYR
-    # 100.000 KWD == 4818035 BYR
-    expect(@bank.exchange(100000, "KWD", "BYR").cents).to eq(((subunit / 1000) * @exchange_rates["currencies"]['KWD'].to_f * 100).round)
-
-    subunit = Money::Currency.wrap("JPY").subunit_to_unit.to_f
-    expect(subunit).to eq(1)
-
-    #    1 JPY == 120.775 BYR
-    # 1000 JPY == 120775 BYR
-    expect(@bank.exchange(1000, "JPY", "BYR").cents).to eq((@exchange_rates["currencies"]['JPY'].to_f * 1000).round)
   end
 
-  it "should return the correct exchange rates using exchange_with" do
-    @bank.update_rates(@cache_path)
-    NbrbCurrency::CURRENCIES.reject{|c| %w{JPY KWD ISK}.include?(c) }.each do |currency|
-      expect(@bank.exchange_with(Money.new(10000, currency), "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
-      expect(@bank.exchange_with(100.to_money(currency), "BYR").cents).to eq((@exchange_rates["currencies"][currency].to_f * 100).round)
+  describe 'historical rates - 1996 (BYB - old Belarusian ruble)' do
+    it 'fetches rates from 1996', vcr: {cassette_name: 'rates_1996_01'} do
+      date = Date.new(1996, 1, 1)
+      bank.update_historical_rates(nil, date)
+      usd_rate = bank.get_rate('USD', 'BYR', date)
+
+      expect(usd_rate).to be > 0
     end
-
-    # No subunits in ISK and JPY.
-    # Therefore 1 ISK is Money.new(1, "ISK"), not Money.new(100, "ISK")
-
-    #  ISK  |     BYR    #
-    #-------+------------#
-    #     1 |     106.68 #
-    #   100 |   10668.00 #
-    # 10000 | 1066800.00 #
-
-    expect(@bank.exchange_with(Money.new(10000, "ISK"), "BYR").cents).to eq(1066800)
-    expect(@bank.exchange_with(Money.new(1000, "JPY"), "BYR").cents).to eq(120775)
   end
 
-  # in response to #4
-  it "should exchange btc" do
-    Money::Currency.register({
-      :priority        => 1,
-      :iso_code        => "BTC",
-      :name            => "Bitcoin",
-      :symbol          => "BTC",
-      :subunit         => "Cent",
-      :subunit_to_unit => 1000,
-      :separator       => ".",
-      :delimiter       => ","
-    })
-    @bank.add_rate("USD", "BTC", 1 / 13.7603)
-    @bank.add_rate("BTC", "USD", 13.7603)
-    expect(@bank.exchange(100, "BTC", "USD").cents).to eq(138)
+  describe 'currency detection' do
+    it 'detects BYN for recent dates' do
+      date = Date.new(2020, 1, 1)
+      expect(bank.send(:base_currency_for_date, date)).to eq('BYN')
+    end
+
+    it 'detects BYR for old dates' do
+      date = Date.new(2015, 1, 1)
+      expect(bank.send(:base_currency_for_date, date)).to eq('BYR')
+    end
+
+    it 'detects currency from rate magnitude' do # rubocop:disable RSpec/MultipleExpectations
+      expect(bank.send(:detect_base_currency_from_rate, 14_490)).to eq('BYR')
+      expect(bank.send(:detect_base_currency_from_rate, 2.89)).to eq('BYN')
+    end
+  end
+
+  describe 'exchange operations' do
+    it 'exchanges between currencies', vcr: {cassette_name: 'current_rates'} do
+      bank.update_rates
+      result = bank.exchange(100_00, 'USD', 'EUR')
+
+      expect(result.cents).to be > 0
+    end
+
+    it 'handles manual rate setting' do
+      bank.set_rate('USD', 'BYN', 2.5)
+      bank.set_rate('EUR', 'BYN', 2.8)
+      result = bank.exchange(100, 'USD', 'EUR')
+
+      expect(result.cents).to be > 0
+    end
+  end
+
+  describe 'rate persistence' do
+    it 'exports and import rates' do # rubocop:disable RSpec/MultipleExpectations, RSpec/ExampleLength
+      bank.set_rate('USD', 'BYN', 2.5)
+      bank.set_rate('EUR', 'BYN', 2.8)
+
+      new_bank = NbrbCurrency.new
+      new_bank.import_rates(:yaml, bank.export_rates(:yaml))
+
+      expect(new_bank.get_rate('USD', 'BYN')).to eq(2.5)
+      expect(new_bank.get_rate('EUR', 'BYN')).to eq(2.8)
+    end
+  end
+
+  describe 'error handling' do
+    it 'raises CurrencyUnavailable for unsupported currencies' do
+      expect { bank.check_currency_available('XXX') }.to raise_exception(CurrencyUnavailable)
+    end
+  end
+
+  describe 'metadata' do
+    it 'sets last_updated when rates are downloaded', vcr: {cassette_name: 'current_rates'} do
+      last_updated_before = bank.last_updated
+      bank.update_rates
+      last_updated_after = bank.last_updated
+
+      expect(last_updated_before).not_to eq(last_updated_after)
+    end
+
+    it 'sets rates_updated_at when rates are downloaded', vcr: {cassette_name: 'current_rates'} do
+      rates_updated_at_before = bank.rates_updated_at
+      bank.update_rates
+      rates_updated_at_after = bank.rates_updated_at
+
+      expect(rates_updated_at_before).not_to eq(rates_updated_at_after)
+    end
   end
 end

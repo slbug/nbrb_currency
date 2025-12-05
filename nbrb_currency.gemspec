@@ -1,28 +1,28 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
+
+require_relative 'lib/nbrb_currency/version'
 
 Gem::Specification.new do |s|
-  s.name        = "nbrb_currency"
-  s.version     = "1.0.1"
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Aleks Grebennik"]
-  s.email       = ["aleks.grebennik@gmail.com"]
-  s.homepage    = "http://github.com/slbug/nbrb_currency"
-  s.summary     = %q{Calculates exchange rates based on rates from National Bank of the Republic of Belarus. Money gem compatible.}
-  s.description = %q{This gem reads exchange rates from the National Bank of the Republic of Belarus website. It uses it to calculates exchange rates. It is compatible with the money gem}
+  s.name         = 'nbrb_currency'
+  s.version      = NbrbCurrencyVersion::VERSION
+  s.platform     = Gem::Platform::RUBY
+  s.authors      = ['Alexander Grebennik']
+  s.email        = ['sl.bug.sl@gmail.com']
+  s.homepage     = 'https://github.com/slbug/nbrb_currency'
+  s.summary      = 'Calculates exchange rates based on rates from National Bank of the Republic of Belarus. Money gem compatible.'
+  s.description  = 'This gem reads exchange rates from the National Bank of the Republic of Belarus website. It uses it to calculates exchange rates. It is compatible with the money gem'
+  s.license      = 'MIT'
 
-  s.required_rubygems_version = ">= 1.3.6"
+  s.metadata['changelog_uri'] = 'https://github.com/slbug/nbrb_currency/blob/main/CHANGELOG.md'
+  s.metadata['source_code_uri'] = 'https://github.com/slbug/nbrb_currency'
+  s.metadata['bug_tracker_uri'] = 'https://github.com/slbug/nbrb_currency/issues'
+  s.metadata['rubygems_mfa_required'] = 'true'
 
-  s.add_dependency "nokogiri"
-  s.add_dependency "money",    ">= 5.0.0"
+  s.required_ruby_version = '>= 3.4.7'
 
-  s.add_development_dependency "rspec", ">= 2.0.0"
-  s.add_development_dependency "rr"
-  s.add_development_dependency "shoulda"
-  s.add_development_dependency "monetize"
+  s.add_dependency 'bigdecimal'
+  s.add_dependency 'money', '>= 6.19'
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  s.files = Dir.glob('lib/**/*') + %w(CHANGELOG.md LICENSE README.md)
+  s.require_path = 'lib'
 end
