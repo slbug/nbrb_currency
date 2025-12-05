@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description  = 'This gem reads exchange rates from the National Bank of the Republic of Belarus website. It uses it to calculates exchange rates. It is compatible with the money gem'
   s.license      = 'MIT'
 
-  s.metadata['changelog_uri'] = 'https://github.com/slbug/nbrb_currency/blob/main/CHANGELOG.md'
+  s.metadata['changelog_uri'] = 'https://github.com/slbug/nbrb_currency/blob/master/CHANGELOG.md'
   s.metadata['source_code_uri'] = 'https://github.com/slbug/nbrb_currency'
   s.metadata['bug_tracker_uri'] = 'https://github.com/slbug/nbrb_currency/issues'
   s.metadata['rubygems_mfa_required'] = 'true'
